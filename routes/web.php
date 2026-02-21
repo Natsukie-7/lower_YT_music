@@ -1,7 +1,4 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
+require __DIR__ . "/auth/auth.routes.php";
+require __DIR__ . "/app/app.routes.php";
