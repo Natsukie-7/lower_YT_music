@@ -1,1 +1,1 @@
-# Projeto de hub de musicas
+# Projeto de hub de musica com laravel
