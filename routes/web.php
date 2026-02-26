@@ -1,4 +1,4 @@
 <?php
 
-require __DIR__ . "/auth/auth.routes.php";
-require __DIR__ . "/app/app.routes.php";
+require __DIR__ . "/viewRoutes/viewRoutes.php"; // Telas
+require __DIR__ . "/appRoutes/appRoutes.php"; // Processamento
