@@ -1,14 +1,19 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from "vite";
+import checker from "vite-plugin-checker";
 import laravel from 'laravel-vite-plugin';
-import tailwindcss from '@tailwindcss/vite';
+import solid from 'vite-plugin-solid'
 
 export default defineConfig({
     plugins: [
         laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
+            input: [
+                'resources/scss/index.scss',
+                'resources/ts/main.ts'
+            ],
             refresh: true,
         }),
-        tailwindcss(),
+        solid(),
+        checker({ typescript: true })
     ],
     server: {
         watch: {
