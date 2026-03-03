@@ -5,14 +5,15 @@
 
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "types": [],
     "sourceMap": true,
 
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
 
     "strict": true,
-    "jsx": "react-jsx",
+     "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "types": ["vite/client"],
     "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,

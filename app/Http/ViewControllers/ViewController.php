@@ -3,9 +3,9 @@
 namespace App\Http\ViewControllers;
 
 class ViewController {
-    public function home()
+    public function app()
     {
-        return view("home");
+        return view("app");
     }
     
     public function login()

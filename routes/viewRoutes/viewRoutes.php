@@ -6,5 +6,5 @@ use Illuminate\Support\Facades\Route;
 Route::get("/login", [ViewController::class, 'login']);
 
 Route::middleware(['authorization'])->group(function () {
-    Route::get("/", [ViewController::class, 'home']);
+    Route::get("/", [ViewController::class, 'app']);
 });
