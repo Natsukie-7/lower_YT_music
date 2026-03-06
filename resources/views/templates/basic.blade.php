@@ -17,7 +17,7 @@
     <div id="root">
         @yield('root')
     </div>
-    
+
     @stack('scripts')
 </body>
 </html>
