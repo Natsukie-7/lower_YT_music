@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\AppController;
-use App\Http\Controllers\Authentication\Login;
+use App\Http\Controllers\Authentication\Authentication;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('/api')->group(function () {
-    Route::post('/login', [Login::class, 'SignIn']);
+    Route::post('/login', [Authentication::class, 'SignIn']);
 });
