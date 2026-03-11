@@ -1,15 +1,18 @@
-version: '3.8'
+version: "3.8"
 
 services:
   lower_YT_music_databse:
     image: mysql:8.0
     container_name: lower_YT_music_databse
+    env_file:
+      - .env
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: laravel
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    command: --default-authentication-plugin=mysql_native_password
     ports:
-      - "3306:3306"
+      - "9999:3306"
     volumes:
       - ./mysql-data:/var/lib/mysql

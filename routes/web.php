@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+require __DIR__ . "/appRoutes/appRoutes.php"; // Telas
 
-Route::get('/', function () {
-    return view('welcome');
-});
+require __DIR__ . "/apiRoutes/apiRoutes.php"; // Processamento
