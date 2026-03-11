@@ -1,30 +1,49 @@
 <?php
-
 namespace App\Http\Controllers\Authentication;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User as UserModel;
+use App\Core\Jwt;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\BaseController;
 
-class Authentication extends Controller
+class Authentication extends BaseController
 {
-    public function SignUp(Request $request)
+    private $jwt;
+
+    public function __construct(Jwt $jwt)
     {
-        
+        $this->jwt = $jwt;
     }
 
-    public function SignIn(Request $request)
+    public function SignUp(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $validator = Validator::make(
+            $request->all(), 
+            [
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required|string|min:6'
+            ]
+        );
 
-        if (!Auth::attempt($credentials)) {
-            return self::sendResponse(401, null, 'Credenciais inválidas');
+        if ($validator->fails()) {
+            return self::sendResponse(422, null, $validator->errors()->first());
         }
 
-        $user = Auth::user();
+        $user = UserModel::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
 
-        return self::sendResponse(200, [
-            'user' => $user
-        ], 'Login realizado com sucesso');
+        if (!$user instanceof UserModel) {
+            return self::sendResponse(412, null, "Error on generate the user");
+        }
+
+        $token = $this->jwt->generate($user);
+
+        return self::sendResponse(200, $token, 'Login realizado com sucesso');
     }
 }

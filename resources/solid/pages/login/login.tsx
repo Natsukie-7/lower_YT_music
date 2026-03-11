@@ -5,6 +5,7 @@ import createSignalAdapter from "../../tools/createSignalAdapter";
 import StyledLogin from "./login.styled";
 import Button, { ClickButtonEvent } from "@/components/button/button";
 import api from "@/api";
+import { A } from "@solidjs/router";
 
 interface LoginProps {}
 
@@ -35,6 +36,7 @@ const LoginForm: Component = () => {
       </StyledLogin.Form>
 
       <Button onClick={handleSubmit}>Fazer login</Button>
+      <A href="/register">Não tem uma conta? Faça o registro aqui</A>
     </StyledLogin>
   );
 };

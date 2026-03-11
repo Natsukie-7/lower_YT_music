@@ -1,7 +1,8 @@
-import { Router, type RouteDefinition, type RouteProps, type RouterProps } from "@solidjs/router";
-import { createComponent, lazy } from "solid-js";
+import { Router, type RouteDefinition } from "@solidjs/router";
+import { createComponent } from "solid-js";
 import Authorization from "./components/authorization/authorization";
 import Login from "./pages/login/login";
+import Register from "./pages/register/register";
 
 const publicRoutes: RouteDefinition[] = [
   {
@@ -10,6 +11,7 @@ const publicRoutes: RouteDefinition[] = [
   },
   {
     path: "/register",
+    component: Register,
   },
 ];
 
