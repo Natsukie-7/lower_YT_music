@@ -9,10 +9,11 @@ export default function createApplicationServer() {
     userQuery: useQuery(() => ({
       queryKey: ["authorization-user", localStorage.apiAuthorizationKey],
       queryFn: async function () {
-        const { data } = await api.get<{ data: User }>("/sync");
+        const response = await api.get<{ data: User }>("/sync");
 
-        return data;
+        return { user: response.data.data, status: response.status };
       },
+      retry: false,
     })),
   };
 }

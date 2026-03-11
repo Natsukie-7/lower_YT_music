@@ -45,6 +45,34 @@ class Authentication extends BaseController
 
         $token = $this->jwt->generate($user);
 
-        return self::sendResponse(200, $token, 'Login realizado com sucesso');
+        return self::sendResponse(200, $token);
+    }
+
+    public function SignIn(Request $request)
+    {
+        $validator = Validator::make(
+            $request->all(), 
+            [
+                'email' => 'required|email',
+                'password' => 'required|string|min:6'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return self::sendResponse(422, null, $validator->errors()->first());
+        }
+
+        $user = UserModel::where('email', $request->email)->first();
+        if (!$user instanceof UserModel) {
+            return self::sendResponse(422, null, "Invalid credentials");
+        }
+
+        if (!Hash::check($request->password, $user->password)) {
+            return self::sendResponse(422, null, "Invalid credentials");
+        }
+
+        $token = $this->jwt->generate($user);
+
+        return self::sendResponse(200, $token);
     }
 }

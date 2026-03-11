@@ -33,7 +33,11 @@ export class ApiFactory {
     return search.toString() ? `?${search.toString()}` : "";
   }
 
-  private async request<R>(method: string, url: string, config?: BodyConfig): Promise<R> {
+  private async request<R>(
+    method: string,
+    url: string,
+    config?: BodyConfig
+  ): Promise<{ data: R; status: number }> {
     const response = await fetch(this.resolveUrl(url), {
       method,
       credentials: "include",
@@ -46,33 +50,46 @@ export class ApiFactory {
       body: config?.body ? JSON.stringify(config.body) : undefined,
     });
 
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(`API Error ${response.status}: ${text}`);
+    const contentType = response.headers.get("content-type");
+    let data: any;
+    if (contentType?.includes("application/json")) {
+      data = await response.json();
+    } else {
+      data = await response.text();
     }
 
-    const contentType = response.headers.get("content-type");
-    if (contentType?.includes("application/json")) {
-      return response.json();
-    }
-    // Se não for JSON, retorna o texto bruto (pode ser útil em alguns endpoints)
-    return response.text() as unknown as R;
+    return { data, status: response.status };
   }
 
-  get<R, P extends Params = Params>(url: string, config?: GetConfig<P>): Promise<R> {
+  get<R, P extends Params = Params>(
+    url: string,
+    config?: GetConfig<P>
+  ): Promise<{ data: R; status: number }> {
     const query = this.buildQuery(config?.params);
     return this.request<R>("GET", url + query, { headers: config?.headers });
   }
 
-  post<R, B = unknown>(url: string, body?: B, config?: BodyConfig): Promise<R> {
+  post<R, B = unknown>(
+    url: string,
+    body?: B,
+    config?: BodyConfig
+  ): Promise<{ data: R; status: number }> {
     return this.request<R>("POST", url, { ...config, body });
   }
 
-  put<R, B = unknown>(url: string, body?: B, config?: BodyConfig): Promise<R> {
+  put<R, B = unknown>(
+    url: string,
+    body?: B,
+    config?: BodyConfig
+  ): Promise<{ data: R; status: number }> {
     return this.request<R>("PUT", url, { ...config, body });
   }
 
-  delete<R, B = unknown>(url: string, body?: B, config?: BodyConfig): Promise<R> {
+  delete<R, B = unknown>(
+    url: string,
+    body?: B,
+    config?: BodyConfig
+  ): Promise<{ data: R; status: number }> {
     return this.request<R>("DELETE", url, { ...config, body });
   }
 }

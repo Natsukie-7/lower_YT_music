@@ -4,13 +4,17 @@ import Input from "../../components/inputs";
 import createSignalAdapter from "../../tools/createSignalAdapter";
 import StyledLogin from "./login.styled";
 import Button, { ClickButtonEvent } from "@/components/button/button";
-import api from "@/api";
-import { A } from "@solidjs/router";
+import { A, useNavigate } from "@solidjs/router";
+import createLoginMutation from "./login.service";
 
 interface LoginProps {}
 
 const LoginForm: Component = () => {
+  const navigate = useNavigate();
+
   const [form, setForm] = useLoginContext();
+
+  const loginMutation = createLoginMutation();
 
   const syncFormInputs = (key: keyof typeof form) =>
     createSignalAdapter<string>(
@@ -21,9 +25,13 @@ const LoginForm: Component = () => {
     );
 
   const handleSubmit: ClickButtonEvent = async () => {
-    const response = await api.post("/login");
+    if (!form.email || !form.password) {
+      return;
+    }
 
-    console.log(response);
+    await loginMutation.mutateAsync({ email: form.email, password: form.password });
+
+    navigate("/");
   };
 
   return (

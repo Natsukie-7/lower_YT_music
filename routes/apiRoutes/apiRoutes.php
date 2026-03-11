@@ -13,4 +13,5 @@ Route::prefix('/api')->group(function () {
 // Rotas protegidas pelo middleware
 Route::prefix('/api')->middleware('authorization')->group(function () {
     Route::get('/sync', [Authorization::class, 'sync']);
+    Route::get('/revoke', [Authorization::class, 'revoke']);
 });

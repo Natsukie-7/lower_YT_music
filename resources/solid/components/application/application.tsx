@@ -1,12 +1,11 @@
 import { useNavigate, type RouteSectionProps } from "@solidjs/router";
 import { Show, type Component } from "solid-js";
-import { useLocalStorageContext } from "../localStorage/localStorage.context";
 import { ApplicationContextProvider } from "./application.context";
 import createApplicationServer from "./application.service";
+import { createEffectOn } from "@/tools/createEffectOn";
 
 const Application: Component<RouteSectionProps> = (props) => {
   const navigate = useNavigate();
-  const [localStorage] = useLocalStorageContext();
 
   const { userQuery } = createApplicationServer();
 
@@ -15,17 +14,27 @@ const Application: Component<RouteSectionProps> = (props) => {
       return userQuery.isLoading;
     },
     get user() {
-      if (this.isLoading) {
+      if (this.isLoading || !userQuery.data) {
         return null;
       }
-
-      return userQuery.data || null;
+      return userQuery.data.user;
+    },
+    get isRevoked() {
+      if (this.isLoading) return false;
+      return userQuery.data?.status == 401;
     },
   };
 
-  if (!localStorage.apiAuthorizationKey) {
-    navigate("/login", { replace: true });
-  }
+  createEffectOn(
+    () => localState.isRevoked,
+    (isRevoked) => {
+      if (!isRevoked) {
+        return;
+      }
+
+      navigate("/logout", { replace: true });
+    }
+  );
 
   return (
     <Show when={localState.user} keyed>

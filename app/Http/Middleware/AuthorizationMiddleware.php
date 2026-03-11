@@ -37,7 +37,7 @@ class AuthorizationMiddleware
             return response()->json(['message' => 'Usuário não encontrado'], 401);
         }
 
-        app()->instance(Authorization::class, new Authorization($token, $user));
+        app()->instance(Authorization::class, new Authorization($token, $user, $this->jwt));
 
         return $next($request);
     }

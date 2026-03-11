@@ -11,7 +11,14 @@ class Authorization extends Controller
     {
         $user = $this->authorization->user;
 
-        return self::sendResponse(200, $user->toArray(['id', 'name', 'email']));
+        return self::sendResponse(200, $user->only(['id', 'name', 'email']));
+    }
+    
+    public function revoke(Request $request)
+    {
+        $this->authorization->revoke();
+
+        return self::sendResponse(200);
     }
 }
 

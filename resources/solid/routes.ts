@@ -5,6 +5,7 @@ import Login from "./pages/login/login";
 import Register from "./pages/register/register";
 import System from "./components/system/system";
 import Home from "./pages/home/home";
+import Logout from "./system/logout";
 
 const publicRoutes: RouteDefinition[] = [
   {
@@ -15,10 +16,15 @@ const publicRoutes: RouteDefinition[] = [
     path: "/register",
     component: Register,
   },
+  { path: "/logout", component: Logout },
 ];
 
 const appRoutes: RouteDefinition[] = [
-  { path: "", component: Authorization, children: [{ path: "/", component: Home }] },
+  {
+    path: "",
+    component: Authorization,
+    children: [{ path: "/", component: Home }],
+  },
 ];
 
 const routes: RouteDefinition[] = [
