@@ -5,7 +5,6 @@
 @push('scripts')
     <script>
         window.__APP__ = @json([
-            'user' => auth()->user(), 
             'csrf' => csrf_token()
         ]);
     </script>

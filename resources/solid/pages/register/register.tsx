@@ -4,12 +4,15 @@ import Input from "../../components/inputs";
 import createSignalAdapter from "../../tools/createSignalAdapter";
 import StyledRegister from "./register.styled";
 import Button, { ClickButtonEvent } from "@/components/button/button";
-import api from "@/api";
-import { A } from "@solidjs/router";
+import { A, useNavigate } from "@solidjs/router";
+import createRegisterMutation from "./register.service";
 
 interface RegisterProps {}
 
 const RegisterForm: Component = () => {
+  const navigate = useNavigate();
+
+  const registerMutation = createRegisterMutation();
   const [form, { setForm }] = useRegisterContext();
 
   const syncFormInputs = (key: keyof typeof form) =>
@@ -21,9 +24,17 @@ const RegisterForm: Component = () => {
     );
 
   const handleSubmit: ClickButtonEvent = async () => {
-    const response = await api.post("/register", form);
+    if (!form.name || !form.email || !form.password) {
+      return;
+    }
 
-    console.log(response);
+    await registerMutation.mutateAsync({
+      name: form.name,
+      email: form.email,
+      password: form.password,
+    });
+
+    navigate("/");
   };
 
   return (

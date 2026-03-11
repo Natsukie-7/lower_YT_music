@@ -7,6 +7,7 @@ use App\Core\Jwt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\BaseController;
+use App\Core\Authorization;
 
 class Authentication extends BaseController
 {
